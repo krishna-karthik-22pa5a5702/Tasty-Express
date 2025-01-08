@@ -1,0 +1,20 @@
+<!-- Sidebar -->
+<div class="sidebar">
+    <h4 class="p-3">Dashboard</h4>
+    <a href="#" onclick="loadPage('home')">Home</a>
+    <a href="#" onclick="toggleSubmenu('section1')">Restaurant</a>
+    <div id="section1" class="submenu">
+        <a href="#" onclick="loadPage('menu')">Menu</a>
+        <a href="#" onclick="loadPage('form')">Add Menu</a>
+    </div>
+    <a href="#" onclick="toggleSubmenu('section2')">Sales</a>
+    <div id="section2" class="submenu">
+        <a href="#" onclick="loadPage('daily-sales')">Daily Sales</a>
+        <a href="#" onclick="loadPage('monthly-sales')">Monthly Sales</a>
+    </div>
+    <a href="#" onclick="toggleSubmenu('section3')">Customers</a>
+    <div id="section3" class="submenu">
+        <a href="#" onclick="loadPage('customer-list')">Customer List</a>
+        <a href="#" onclick="loadPage('customer-feedback')">Feedback</a>
+    </div>
+</div>

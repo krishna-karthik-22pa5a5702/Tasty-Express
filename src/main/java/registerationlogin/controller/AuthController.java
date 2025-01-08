@@ -1,25 +1,35 @@
 package registerationlogin.controller;
 
 import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import registerationlogin.dto.MenuItemDto;
 import registerationlogin.dto.UserDto;
+import registerationlogin.entity.MenuItem;
 import registerationlogin.entity.User;
+import registerationlogin.repository.MenuItemRepository;
+import registerationlogin.service.MenuItemService;
 import registerationlogin.service.UserService;
 
 import java.util.List;
 
 @Controller
 public class AuthController {
+    
     private UserService userService;
+    private MenuItemService menuItemService;
 
-    public AuthController(UserService userService){
+    public AuthController(UserService userService, MenuItemService menuItemService) {
+        this.menuItemService = menuItemService;
         this.userService=userService;
     }
+
 
     //handler method to handle home page.
     @GetMapping("/index")
@@ -74,11 +84,40 @@ public class AuthController {
         return "restaurant";
     }
 
+    @GetMapping("/restaurant/menu")
+    public String menu(Model model) {
+    List<MenuItemDto> menuItems = menuItemService.findAllItems();
+    System.out.println("menuItems: " + menuItems);
+    model.addAttribute("menuItems", menuItems);
+    return "menu";
+}
+    
+
+    @GetMapping("/restaurant/new")
+    public String showMenuItemForm(Model model) {
+        MenuItemDto menuItemDto = new MenuItemDto();
+        model.addAttribute("menuItem", menuItemDto);
+        return "form";
+    }
+
+    @PostMapping("/restaurant/save")
+    public String saveMenuItem(@Valid @ModelAttribute("menuItem") MenuItemDto menuItemDto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("menuItem", menuItemDto);
+            return "form";
+        }
+        menuItemService.saveMenuItem(menuItemDto);
+        return "redirect:/restaurant/menu";
+    }
+    
+
     //handler methods for getting list of restaurant.
     @GetMapping("/customer/home")
     public String customer(){
         return "customer";
     }
+
+    
 
     //handler methods for handling login request.
 

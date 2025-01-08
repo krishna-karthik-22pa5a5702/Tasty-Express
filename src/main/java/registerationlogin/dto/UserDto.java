@@ -21,5 +21,4 @@ public class UserDto {
     private String email;                               // As form data is stored in dto objects , therefore dto object fields should be validated.
     @NotEmpty(message = "password should not be empty")
     private String password;
-
 }
