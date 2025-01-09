@@ -6,6 +6,7 @@ import registerationlogin.entity.Category;
 import registerationlogin.repository.CategoryRepository;
 import registerationlogin.service.CategoryService;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -19,6 +20,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public Category findById(Long id) {
+        return categoryRepository.findById(id).orElse(null);
+    }
+    @Override
+    public Category save(Category category) {
+        Optional<Category> existingCategory = categoryRepository.findByName(category.getName());
+
+        if (existingCategory.isPresent()) {
+            throw new IllegalArgumentException("Category with this name already exists.");
+        }
+        categoryRepository.save(category); // Save the new category to the database
+        return category;
     }
 }
 

@@ -23,7 +23,10 @@ public class MenuItem {
     private Double price;
     private Boolean availability;
 
-    // @ManyToOne
-    // @JoinColumn(name = "category_id")
-    // private Category category;
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

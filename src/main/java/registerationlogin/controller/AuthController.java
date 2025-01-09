@@ -9,33 +9,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import registerationlogin.dto.MenuItemDto;
 import registerationlogin.dto.UserDto;
-import registerationlogin.entity.MenuItem;
 import registerationlogin.entity.User;
-import registerationlogin.repository.MenuItemRepository;
-import registerationlogin.service.MenuItemService;
 import registerationlogin.service.UserService;
-
 import java.util.List;
 
 @Controller
 public class AuthController {
     
     private UserService userService;
-    private MenuItemService menuItemService;
 
-    public AuthController(UserService userService, MenuItemService menuItemService) {
-        this.menuItemService = menuItemService;
+    public AuthController(UserService userService) {
         this.userService=userService;
     }
 
 
     //handler method to handle home page.
-    @GetMapping("/index")
+    @GetMapping("/")
     public String home(){
-        return "index";
-        
+        return "index"; 
     }
 
     //handler method to handle user registeration form request.
@@ -46,7 +38,6 @@ public class AuthController {
         UserDto userDto = new UserDto();
         model.addAttribute("user",userDto); //model object is used to store data that is entered from form.
         return "register";
-
     }
     //handler method to handle user registration form submit request.
 
@@ -77,38 +68,6 @@ public class AuthController {
         model.addAttribute("users",users);
         return "dashboard";
     }
-
-    //handler methods for getting list of restaurant.
-    @GetMapping("/restaurant/home")
-    public String restaurant(){
-        return "restaurant";
-    }
-
-    @GetMapping("/restaurant/menu")
-    public String menu(Model model) {
-    List<MenuItemDto> menuItems = menuItemService.findAllItems();
-    System.out.println("menuItems: " + menuItems);
-    model.addAttribute("menuItems", menuItems);
-    return "menu";
-}
-    
-
-    @GetMapping("/restaurant/new")
-    public String showMenuItemForm(Model model) {
-        MenuItemDto menuItemDto = new MenuItemDto();
-        model.addAttribute("menuItem", menuItemDto);
-        return "form";
-    }
-
-    @PostMapping("/restaurant/save")
-    public String saveMenuItem(@Valid @ModelAttribute("menuItem") MenuItemDto menuItemDto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("menuItem", menuItemDto);
-            return "form";
-        }
-        menuItemService.saveMenuItem(menuItemDto);
-        return "redirect:/restaurant/menu";
-    }
     
 
     //handler methods for getting list of restaurant.
@@ -116,8 +75,6 @@ public class AuthController {
     public String customer(){
         return "customer";
     }
-
-    
 
     //handler methods for handling login request.
 

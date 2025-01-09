@@ -31,7 +31,7 @@ public class SpringSecurity {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/register/**").permitAll()
-                    .requestMatchers("/index").permitAll()        //For matching http request requests.
+                    .requestMatchers("/").permitAll()        //For matching http request requests.
                     .requestMatchers("/customer/**").hasRole("CUSTOMER") //Giving acess for admins role users only.
                     .requestMatchers("/restaurant/**").hasRole("RESTAURANT")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -50,7 +50,7 @@ public class SpringSecurity {
                 );
         return http.build();
     }
-        @Bean
+    @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         return (request, response, authentication) -> {
             // Check roles and redirect accordingly
@@ -59,7 +59,7 @@ public class SpringSecurity {
                 response.sendRedirect("/admin/dashboard");
             } else if (authentication.getAuthorities().stream()
                     .anyMatch(auth -> auth.getAuthority().equals("ROLE_RESTAURANT"))) {
-                response.sendRedirect("/restaurant/home");
+                response.sendRedirect("/restaurant/dashboard");
             }
             else if (authentication.getAuthorities().stream()
                     .anyMatch(auth -> auth.getAuthority().equals("ROLE_CUSTOMER"))) {
