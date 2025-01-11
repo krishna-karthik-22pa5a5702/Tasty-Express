@@ -183,6 +183,7 @@
                             <th>Price</th>
                             <th>Category</th>
                             <th>Availability</th>
+                            <th>Type</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -203,6 +204,7 @@
                             <td th:text="${item.categoryName}"></td>
                             <td th:classappend="${item.availability} ? 'availability-true' : 'availability-false'"
                                 th:text="${item.availability} ? 'Available' : 'Unavailable'"></td>
+                            <td th:text="${item.type}"></td>
                             <td>
                                 <a class="btn btn-sm d-flex align-items-center"
                                     th:href="@{'/restaurant/menu/delete/' + ${item.id}}"

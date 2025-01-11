@@ -222,13 +222,25 @@
                             <div th:if="${categoryError}" class="alert alert-danger">
                                 <p th:text="${categoryError}"></p>
                             </div>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemType" class="form-label">Type</label>
+                            <select class="form-select" id="itemType" name="type">
+                                <option th:value="VEG" th:selected="${menuItem.type == 'VEG'}">VEG</option>
+                                <option th:value="NON_VEG" th:selected="${menuItem.type == 'NON_VEG'}">NON_VEG</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCategory" class="form-label">Category</label>
                             <select class="form-select" id="itemCategory" name="categoryId">
                                 <option value="">Select a Category</option>
                                 <option th:each="category : ${categories}" th:value="${category.id}"
-                                    th:text="${category.name}"></option>
+                                    th:text="${category.name}" ></option>
                             </select>
                         </div>
-
                     </div>
 
                     <div class="form-row">

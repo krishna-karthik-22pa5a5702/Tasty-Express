@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import registerationlogin.dto.ReqMenuItemDto;
 import registerationlogin.dto.ResMenuItemDto;
 import registerationlogin.entity.Category;
-import registerationlogin.entity.MenuItem;
 import registerationlogin.service.CategoryService;
 import registerationlogin.service.MenuItemService;
 
@@ -44,7 +43,7 @@ public class RestaurantController {
     @GetMapping("/menu")
         public String menu(Model model) {
         List<ResMenuItemDto> menuItems = menuItemService.findAllItems();
-        System.out.println("menuItems: " + menuItems);
+        // System.out.println("menuItems: " + menuItems);
         model.addAttribute("menuItems", menuItems);
         return "menu";
     }
@@ -98,12 +97,14 @@ public class RestaurantController {
 
     @GetMapping("/menu/edit/{id}")
         public String getMenuItem(@PathVariable Long id, Model model) {
+
         ResMenuItemDto item = menuItemService.findById(id);
-        System.out.println(item.getCategoryName());
-        model.addAttribute("menuItem", item);
         String categoryName = item.getCategoryName();
+
+        model.addAttribute("menuItem", item);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("categories", categoryService.findAll());
+
         return "edit-menu-item"; // Returns the edit page
     }
 
@@ -112,6 +113,8 @@ public class RestaurantController {
         if(!image.isEmpty()){
             reqMenuItemDto.setFile(image);
         }
+        System.out.println("id: " + id);
+        System.out.println(reqMenuItemDto.getType());
         menuItemService.updateMenuItem(id, reqMenuItemDto);
         return "redirect:/restaurant/menu"; // Redirect back to the menu page
     }

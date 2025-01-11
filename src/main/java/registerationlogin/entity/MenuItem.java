@@ -22,6 +22,8 @@ public class MenuItem {
     private String description;
     private Double price;
     private Boolean availability;
+    private String type; // e.g., "veg", "nonveg"
+    private Integer rating;
 
     @Column(name = "image_url")
     private String imageUrl;

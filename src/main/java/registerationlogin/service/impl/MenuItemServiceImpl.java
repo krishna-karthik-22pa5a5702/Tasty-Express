@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 
 import registerationlogin.dto.ReqMenuItemDto;
 import registerationlogin.dto.ResMenuItemDto;
+import registerationlogin.dto.UserMenuDto;
 import registerationlogin.entity.Category;
 import registerationlogin.entity.MenuItem;
+import registerationlogin.repository.CategoryRepository;
 import registerationlogin.repository.MenuItemRepository;
 import registerationlogin.service.CategoryService;
 import registerationlogin.service.CloudinaryService;
@@ -13,18 +15,22 @@ import registerationlogin.service.MenuItemService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuItemServiceImpl implements MenuItemService {
 
     private  MenuItemRepository menuItemRepository;
+    private  CategoryRepository categoryRepository;
     private CloudinaryService cloudinaryService;
     private CategoryService categoryService;
 
-    public MenuItemServiceImpl(MenuItemRepository menuItemRepository,CloudinaryService cloudinaryService,CategoryService categoryService) {
+    public MenuItemServiceImpl(MenuItemRepository menuItemRepository,CloudinaryService cloudinaryService,CategoryService categoryService,CategoryRepository categoryRepository) {
         this.menuItemRepository = menuItemRepository;
         this.cloudinaryService = cloudinaryService;
         this.categoryService = categoryService;
+        this.categoryRepository = categoryRepository;
 
     }
 
@@ -44,7 +50,8 @@ public class MenuItemServiceImpl implements MenuItemService {
                 menuItem.getPrice(),
                 menuItem.getAvailability(),
                 menuItem.getImageUrl(),
-                categoryName
+                categoryName,
+                menuItem.getType()
                 );
                 
                 menuItemDTOs.add(menuItemDTO);
@@ -63,7 +70,8 @@ public class MenuItemServiceImpl implements MenuItemService {
                 menuItem.getPrice(),
                 menuItem.getAvailability(),
                 menuItem.getImageUrl(),
-                menuItem.getCategory().getName()
+                menuItem.getCategory().getName(),
+                menuItem.getType()
                             );
         }
         return null;    }
@@ -81,8 +89,8 @@ public class MenuItemServiceImpl implements MenuItemService {
         menuItem.setPrice(menuItemDto.getPrice());
         menuItem.setAvailability(menuItemDto.getAvailability());
         menuItem.setImageUrl(cloudinaryService.uploadFile(menuItemDto.getFile(), "folder_1"));
-
         menuItem.setCategory(category);
+        menuItem.setType(menuItemDto.getType());
 
         menuItemRepository.save(menuItem);
 
@@ -102,6 +110,7 @@ public class MenuItemServiceImpl implements MenuItemService {
             menuItem.setPrice(menuItemDto.getPrice());
             menuItem.setAvailability(menuItemDto.getAvailability());
             menuItem.setCategory(categoryService.findById(menuItemDto.getCategoryId()));
+            menuItem.setType(menuItemDto.getType());
             if(menuItemDto.getFile() == null){
                 menuItem.setImageUrl(menuItem.getImageUrl());
             }
@@ -110,5 +119,40 @@ public class MenuItemServiceImpl implements MenuItemService {
             }
             menuItemRepository.save(menuItem);
         }
+    }
+
+    @Override
+    public List<UserMenuDto> findAllItemsForUser() {
+        List<MenuItem> menuItems = menuItemRepository.findAll();
+        List<UserMenuDto> menuItemDTOs = new ArrayList<>();
+        for (MenuItem menuItem : menuItems) {
+            UserMenuDto menuItemDTO = new UserMenuDto(
+                menuItem.getId(),
+                menuItem.getName(),
+                menuItem.getDescription(),
+                menuItem.getPrice(),
+                menuItem.getAvailability(),
+                menuItem.getImageUrl(),
+                menuItem.getCategory().getName(),
+                menuItem.getType(),
+                menuItem.getRating()
+            );
+            menuItemDTOs.add(menuItemDTO);
+        }
+        return menuItemDTOs;
+    }
+
+    @Override
+    public Map<String, List<MenuItem>> findAllItemsGroupByCategory() {
+
+        // Fetch all categories
+        List<Category> categories = categoryRepository.findAll();
+
+        // Fetch menu items grouped by category
+         return categories.stream()
+                .collect(Collectors.toMap(
+                        Category::getName,
+                        category -> menuItemRepository.findByCategory_Id(category.getId())
+                ));
     }
 }

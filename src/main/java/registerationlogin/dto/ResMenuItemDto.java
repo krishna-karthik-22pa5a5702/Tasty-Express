@@ -18,4 +18,5 @@ public class ResMenuItemDto {
     // new changes 
     private String imageUrl;
     private String categoryName;
+    private String type;
 }

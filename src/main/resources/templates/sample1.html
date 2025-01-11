@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Categories</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .category-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .accordion-item {
+            border: none;
+        }
+
+        .accordion-button {
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: #5d8aa8;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-4">
+        <div class="accordion" id="menuAccordion">
+            <!-- Category 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Super Friends & Family Combo Deals (12)
+                    </button>
+                </h2>
+            </div>
+            <!-- Category 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Fusion Dosa (47)
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#menuAccordion">
+                    <div class="accordion-body">
+                        <!-- Menu Items for Category 2 -->
+                        <ul>
+                            <li>Masala Dosa - $8</li>
+                            <li>Cheese Dosa - $9</li>
+                            <li>Paneer Dosa - $10</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Category 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Idly Of Your Choice (17)
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#menuAccordion">
+                    <div class="accordion-body">
+                        <!-- Menu Items for Category 3 -->
+                        <ul>
+                            <li>Plain Idly - $5</li>
+                            <li>Butter Idly - $6</li>
+                            <li>Sambar Idly - $7</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

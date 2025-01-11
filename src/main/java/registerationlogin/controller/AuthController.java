@@ -70,12 +70,6 @@ public class AuthController {
     }
     
 
-    //handler methods for getting list of restaurant.
-    @GetMapping("/customer/home")
-    public String customer(){
-        return "customer";
-    }
-
     //handler methods for handling login request.
 
     @GetMapping("/login")

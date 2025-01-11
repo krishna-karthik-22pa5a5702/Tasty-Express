@@ -1,6 +1,5 @@
 package registerationlogin.dto;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,14 +10,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ReqMenuItemDto {
+public class UserMenuDto {
+    private Long id;
     private String name;
     private String description;
     private Double price;
     private Boolean availability;
-    // new changes 
-    private MultipartFile file;
-    private Long categoryId;
+    private String imageUrl;
+    private String categoryName;
     private String type;
-
+    private Integer rating;
 }
