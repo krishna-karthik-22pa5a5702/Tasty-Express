@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Tasty Express</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #388E3C;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            text-align: center;
+
+        }
+
+        nav h1 {
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .restaurants {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .restaurant-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .restaurant-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-color: #388E3C;
+        }
+
+        .restaurant-card h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .restaurant-card p {
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            color: #555;
+        }
+
+        .add-restaurant-link {
+            display: block;
+            margin: 1rem;
+            text-align: center;
+            color: #388E3C;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .add-restaurant-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <h1>Restaurant List</h1>
+        </nav>
+    </header>
+
+    <a href="/customer/restaurants/new" class="add-restaurant-link">Add New Restaurant</a>
+
+    <main>
+        <section class="restaurants">
+            <!-- Wrapping the entire card content inside an <a> tag -->
+            <a th:each="restaurant : ${restaurants}" th:href="@{'/customer/restaurant-menu/' + ${restaurant.id}}"
+                class="restaurant-card">
+                <h2 th:text="${restaurant.name}"></h2>
+                <p th:text="${restaurant.phoneNumber}" style="color: #666;"></p>
+                <p th:text="${restaurant.address}" style="color: #666;"></p>
+            </a>
+        </section>
+    </main>
+</body>
+
+</html>

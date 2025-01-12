@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -226,6 +222,7 @@
 
     <main>
         <section class="menu">
+
             <div class="accordion">
                 <!-- Iterate over categories -->
                 <div th:each="entry : ${menuItemsGroupedByCategory}" class="accordion-item">
@@ -255,7 +252,11 @@
                             </div>
                             <div class="right">
                                 <img th:src="@{${menuItem.imageUrl}}" th:alt="${menuItem.name}">
-                                <button class="add-to-cart">Add to Cart</button>
+                                <form th:action="@{/customer/menu/add-to-cart}" method="post">
+                                    <input type="hidden" name="menuItemId" th:value="${menuItem.id}">
+                                    <input type="hidden" name="restaurantId" th:value="${restaurantId}">
+                                    <button class="add-to-cart" type="submit">Add to Cart</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -302,7 +303,10 @@
                 toggleAccordion(firstAccordionHeader); // Opens the first accordion
             }
         };
+
     </script>
+
+
 </body>
 
 </html>
