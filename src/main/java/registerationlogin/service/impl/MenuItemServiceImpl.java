@@ -155,4 +155,23 @@ public class MenuItemServiceImpl implements MenuItemService {
                         category -> menuItemRepository.findByCategory_Id(category.getId())
                 ));
     }
+
+    @Override
+    public Map<String, List<MenuItem>> findAllItemsGroupByCategoryByRestaurantId(Long restaurantId) {
+
+        // Fetch all categories
+        List<Category> categories = categoryRepository.findByRestaurantId( restaurantId);   
+
+        // Fetch menu items grouped by category
+         return categories.stream()
+                .collect(Collectors.toMap(
+                        Category::getName,
+                        category -> menuItemRepository.findByCategory_Id(category.getId())
+                ));
+    }
+
+    @Override
+    public MenuItem findByMenuItemId(Long id) {
+        return menuItemRepository.findById(id).orElse(null);
+    }
 }

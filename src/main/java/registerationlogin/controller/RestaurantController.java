@@ -32,20 +32,20 @@ public class RestaurantController {
         this.menuItemService = menuItemService;
         this.categoryService = categoryService;
     }
-
+    
 
    //handler methods for restaurant dashboard.
     @GetMapping("/dashboard")
     public String restaurant(){
-        return "restaurant";
+        return "restaurant-dashboard";
     }
-    
+
     @GetMapping("/menu")
         public String menu(Model model) {
         List<ResMenuItemDto> menuItems = menuItemService.findAllItems();
         // System.out.println("menuItems: " + menuItems);
         model.addAttribute("menuItems", menuItems);
-        return "menu";
+        return "restaurant-menu-view";
     }
 
    @GetMapping("/add-menu")
@@ -53,7 +53,7 @@ public class RestaurantController {
         ReqMenuItemDto menuItemDto = new ReqMenuItemDto();
         model.addAttribute("menuItem", menuItemDto);
         model.addAttribute("categories", categoryService.findAll());
-        return "form";
+        return "restaurant-menu-form";
     }
 
     @PostMapping("/save")
@@ -76,7 +76,7 @@ public class RestaurantController {
             model.addAttribute("categoryError", e.getMessage());
             model.addAttribute("menuItem", menuItemDto);
             model.addAttribute("categories", categoryService.findAll());
-            return "form"; // Return to the form with error message        }
+            return "restaurant-menu-form"; // Return to the form with error message        }
     }
 }
 
@@ -88,7 +88,7 @@ public class RestaurantController {
         if (result.hasErrors()) {
             model.addAttribute("menuItem", menuItemDto);
             model.addAttribute("categories", categoryService.findAll());  // Add categories to the model again
-            return "form";
+            return "restaurant-menu-form";
         }
         menuItemService.saveMenuItem(menuItemDto);
         return "redirect:/restaurant/menu";
@@ -105,7 +105,7 @@ public class RestaurantController {
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("categories", categoryService.findAll());
 
-        return "edit-menu-item"; // Returns the edit page
+        return "restaurant-edit-menu-item"; // Returns the edit page
     }
 
     @PostMapping("/menu/edit/{id}")

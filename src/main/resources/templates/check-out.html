@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .left-column {
+            width: 45%;
+        }
+
+        .right-column {
+            width: 45%;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background-color: #5d8aa8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #4a708b;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #5d8aa8;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        table td {
+            font-size: 1em;
+            vertical-align: middle;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item .item-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        .cart-item .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-controls button {
+            padding: 5px 12px;
+            font-size: 1.2em;
+            border: none;
+            background-color: #f4f4f4;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-controls button:hover {
+            background-color: #ddd;
+        }
+
+        .quantity-controls span {
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+
+        .total {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="text-align: center; color: #333;">Checkout</h2>
+
+    <div class="container">
+
+        <div class="left-column">
+            <h3>Delivery Information</h3>
+            <form th:action="@{/customer/place-order}" method="post">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+
+                <label for="address">Address</label>
+                <textarea id="address" name="address" class="form-control" rows="4" required></textarea>
+
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" class="form-control" required>
+
+                <label for="paymentMethod">Payment Method</label>
+                <select id="paymentMethod" name="paymentMethod" class="form-control">
+                    <option value="creditCard">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="cash">Cash on Delivery</option>
+                </select>
+
+                <!-- <input type="hidden" name="cart" th:value="${cart.cartItems}" /> Hidden field to send cart data -->
+                <input type="hidden" name="restaurantId" th:value="${restaurant.id}" />
+                <!-- Hidden field for restaurant -->
+
+                <button type="submit" class="btn">Confirm Order</button>
+            </form>
+        </div>
+
+        <div class="right-column">
+            <!-- Display error message if the cart is empty -->
+            <div th:if="${error != null}" style="text-align: center; margin: 10px 0;">
+                <p th:text="${error}" style="color: red; font-weight: bold; font-size: 1.2em;"></p>
+                <a th:href="@{/customer/restaurant-list}" class="btn">Go to Menu</a>
+            </div>
+
+            <h3>Restaurant Info</h3>
+            <div th:if="${restaurant != null}">
+                <h3>Cart Items</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Actions</th> <!-- Added Actions Column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cartItem : ${cart.cartItems}">
+                            <td>
+                                <div class="cart-item">
+                                    <div class="item-details">
+                                        <span th:text="${cartItem.menuItem.name}"></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="quantity-controls">
+                                    <form th:action="@{/customer/cart/update-quantity}" method="post">
+                                        <input type="hidden" name="cartItemId" th:value="${cartItem.id}">
+                                        <button type="submit" name="quantity" value="decrease">-</button>
+                                        <span th:text="${cartItem.quantity}"></span>
+                                        <button type="submit" name="quantity" value="increase">+</button>
+                                    </form>
+                                </div>
+
+                            </td>
+                            <td th:text="${cartItem.menuItem.price}"></td>
+                            <td th:text="${cartItem.quantity * cartItem.menuItem.price}"></td>
+                            <td>
+                                <form th:action="@{/customer/cart/remove-item}" method="post">
+                                    <input type="hidden" name="cartItemId" th:value="${cartItem.id}">
+                                    <button type="submit" class="btn" style="background-color: #d9534f;">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="total">
+                    <p>Total Bill: <span th:text="${cart.totalPrice}"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fallback if restaurant is null -->
+        <div th:if="${restaurant == null}" style="text-align: center; margin-top: 20px;">
+            <p style="color: red;">Restaurant details are unavailable.</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

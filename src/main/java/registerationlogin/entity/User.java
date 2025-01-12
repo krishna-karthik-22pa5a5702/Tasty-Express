@@ -35,5 +35,8 @@ public class User {
     )
     private List<Role> roles = new ArrayList<>();   //Cascading is the option whenver we are changing any record of user, then respective record for role
 //will also be changed.
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL) //This mappedBy is used to tell hibernate that this is the owner of the relationship.
+    private Cart cart;
  
 }
