@@ -1,8 +1,6 @@
 package registerationlogin.controller;
 
 import java.security.Principal;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import registerationlogin.entity.MenuItem;
 import registerationlogin.entity.Restaurant;
+import registerationlogin.entity.Role;
 import registerationlogin.entity.User;
+import registerationlogin.repository.RoleRepository;
+import registerationlogin.repository.UserRepository;
 import registerationlogin.service.CartService;
 import registerationlogin.service.MenuItemService;
 import registerationlogin.service.RestaurantService;
@@ -31,11 +32,15 @@ public class CustomerController {
     private MenuItemService menuItemService;
     private RestaurantService restaurantService;
     private CartService cartService;
+    private RoleRepository roleRepository;  // Inject the RoleRepository
+    private UserRepository userRepository; // Inject the UserRepository
 
-    public CustomerController(MenuItemService menuItemService, RestaurantService restaurantService, CartService cartService) {
+    public CustomerController(MenuItemService menuItemService, RestaurantService restaurantService, CartService cartService, RoleRepository roleRepository, UserRepository userRepository) {
         this.menuItemService = menuItemService;
         this.restaurantService = restaurantService;
         this.cartService = cartService;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     //handler methods for getting list of restaurant.
@@ -58,9 +63,21 @@ public class CustomerController {
     }
 
     @PostMapping("/restaurants/save")
-    public String saveRestaurant(@Valid @ModelAttribute("restaurant") Restaurant restaurant){
+    public String saveRestaurant(@Valid @ModelAttribute("restaurant") Restaurant restaurant,Principal principal){
+        String email = principal.getName();
+        User user = cartService.getUserByEmail(email);
+
+        Role restaurantRole = roleRepository.findByName("ROLE_RESTAURANT");
+
+        // Add the RESTAURANT role to the user
+    if (!user.getRoles().contains(restaurantRole)) {
+        user.getRoles().add(restaurantRole);
+    }
+
+    userRepository.save(user);
+
         restaurantService.saveRestaurant(restaurant);
-        return "redirect:/customer/restaurant-list";
+        return "redirect:/restaurant/restaurant-dashboard";
     }
 
     @GetMapping("/menu")

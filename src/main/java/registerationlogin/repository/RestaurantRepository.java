@@ -7,5 +7,5 @@ import registerationlogin.entity.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {  
     Optional<Restaurant> findByName(String name);
-      
+    Restaurant findByEmail(String email);
 }

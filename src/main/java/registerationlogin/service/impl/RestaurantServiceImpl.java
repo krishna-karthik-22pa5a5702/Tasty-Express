@@ -45,5 +45,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void deleteRestaurant(Long id) {
         restaurantRepository.deleteById(id);
     }
+
+    @Override
+    public Restaurant getRestaurantByEmail(String email) {
+        return restaurantRepository.findByEmail(email);
+    }
     
 }

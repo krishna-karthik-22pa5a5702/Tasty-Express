@@ -1,7 +1,6 @@
 package registerationlogin.controller;
 
 import java.security.Principal;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -180,6 +179,8 @@ public String placeOrder(@RequestParam String name,
 
     order = orderService.saveOrder(order);
 
+    System.out.println("Order ID: " + order.getId());
+
     // Transfer CartItem details to OrderItem
         for (CartItem cartItem : cart.getCartItems()) {
             OrderItem orderItem = new OrderItem();
@@ -191,6 +192,17 @@ public String placeOrder(@RequestParam String name,
         }
      // Clear the cart
     cartService.clearCart(cart);
-    return "order-success"; // Redirect to a success page
+    return "redirect:/customer/order/confirmation?orderId=" + order.getId(); // Redirect to a success page
 }
+
+    @GetMapping("/customer/order/confirmation")
+    public String showOrderConfirmation(@RequestParam Long orderId, Model model) {
+            // Fetch order by ID
+            Order order = orderService.getOrderById(orderId);
+
+            // Add the order to the model
+            model.addAttribute("order", order);
+
+        return "user-order-confirmation";
+    }
 }

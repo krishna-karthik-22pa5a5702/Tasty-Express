@@ -120,11 +120,7 @@
             <a th:href="@{/restaurant/menu}">Menu</a>
             <a th:href="@{/restaurant/add-menu}">Add Menu</a>
         </div>
-        <a th:href="@{/sales}" onclick="toggleSubmenu('section2')">Sales</a>
-        <div id="section2" class="submenu">
-            <a th:href="@{/sales/daily}">Daily Sales</a>
-            <a th:href="@{/sales/monthly}">Monthly Sales</a>
-        </div>
+        <a th:href="@{/restaurant/orders}" onclick="toggleSubmenu('section2')">Orders</a>
         <a th:href="@{/customers}" onclick="toggleSubmenu('section3')">Customers</a>
         <div id="section3" class="submenu">
             <a th:href="@{/customers/list}">Customer List</a>

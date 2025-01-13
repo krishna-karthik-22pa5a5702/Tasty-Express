@@ -7,4 +7,5 @@ public interface RestaurantService {
     Restaurant getRestaurantById(Long id);
     Restaurant saveRestaurant(Restaurant restaurant);
     void deleteRestaurant(Long id);
+    Restaurant getRestaurantByEmail(String email);
 }

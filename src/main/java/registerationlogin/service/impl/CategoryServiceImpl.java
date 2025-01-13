@@ -36,5 +36,10 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category); // Save the new category to the database
         return category;
     }
+
+    @Override
+    public List<Category> findAllByRestaurantId(Long restaurantId) {
+        return categoryRepository.findByRestaurantId(restaurantId);
+    }
 }
 

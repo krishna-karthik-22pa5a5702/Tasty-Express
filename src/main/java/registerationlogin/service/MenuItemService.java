@@ -9,7 +9,7 @@ import registerationlogin.dto.UserMenuDto;
 import registerationlogin.entity.MenuItem;
 
 public interface MenuItemService {
-    List<ResMenuItemDto> findAllItems();
+    List<ResMenuItemDto> findAllItems(Long restaurantId);
     ResMenuItemDto findById(Long id);
     MenuItem findByMenuItemId(Long id);
     void saveMenuItem(ReqMenuItemDto menuItemDto);

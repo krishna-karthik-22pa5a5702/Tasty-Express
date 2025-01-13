@@ -35,26 +35,28 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public List<ResMenuItemDto> findAllItems() {
+    public List<ResMenuItemDto> findAllItems(Long restaurantId) {
         List<MenuItem> menuItems = menuItemRepository.findAll();
         List<ResMenuItemDto> menuItemDTOs = new ArrayList<>();
         
         for (MenuItem menuItem : menuItems) {
             // get category name from category object
             String categoryName= menuItem.getCategory().getName();
-
-            ResMenuItemDto menuItemDTO = new ResMenuItemDto(
-                menuItem.getId(),
-                menuItem.getName(),
-                menuItem.getDescription(),
-                menuItem.getPrice(),
-                menuItem.getAvailability(),
-                menuItem.getImageUrl(),
-                categoryName,
-                menuItem.getType()
-                );
-                
-                menuItemDTOs.add(menuItemDTO);
+            Long restaurantIdFromMenuItem = menuItem.getCategory().getRestaurant().getId();
+ 
+            if(restaurantIdFromMenuItem.equals(restaurantId)){
+                ResMenuItemDto menuItemDTO = new ResMenuItemDto(
+                    menuItem.getId(),
+                    menuItem.getName(),
+                    menuItem.getDescription(),
+                    menuItem.getPrice(),
+                    menuItem.getAvailability(),
+                    menuItem.getImageUrl(),
+                    categoryName,
+                    menuItem.getType()
+                    );
+                    menuItemDTOs.add(menuItemDTO);
+            } 
             }
     return menuItemDTOs;
 }
