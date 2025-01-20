@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #eafaf1;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* padding: 10px 20px; */
+        padding-left: 10px;
+        padding-right: 10px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        background-color: #2e7d32;
+    }
+
+    .header .brand {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #b7bdb7;
+        /* Rich green */
+        text-decoration: none;
+        padding-left: 60px;
+    }
+
+    .header .nav-links a {
+        margin-left: 15px;
+        font-size: 1.2rem;
+        text-decoration: none;
+        color: #b7bdb7;
+        transition: color 0.3s ease;
+    }
+
+    .header .nav-links a:hover {
+        color: #b3ddb6;
+        /* Darker green */
+    }
+</style>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="brand">Food Express</a>
+        <div class="nav-links">
+            <a href="#" th:href="@{/logout}">Logout</a>
+        </div>
+    </header>
+</body>
+
+</html>

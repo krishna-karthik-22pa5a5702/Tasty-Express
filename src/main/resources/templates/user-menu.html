@@ -2,31 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Tasty Express</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Express - Order Your Favorite Meals</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
-        /* Reset default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #eafaf1;
+            margin: 0;
+            padding: 0;
         }
-
-        header {
-            background-color: #388E3C;
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
-
-        nav h1 {
-            font-size: 2rem;
-            letter-spacing: 1px;
+        
+        .hero {
+            margin-top: 80px;
         }
 
         .menu-filters {
@@ -204,66 +192,78 @@
             /* Blue for dish name */
             margin-bottom: 10px;
         }
+
+        #viewCartButton {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
     </style>
 </head>
 
 <body>
-    <header>
-        <nav>
-            <h1>Tasty Express</h1>
-        </nav>
-    </header>
-    <div class="menu-filters">
-        <button onclick="filterItems('all')">All</button>
-        <button onclick="filterItems('VEG')">Veg</button>
-        <button onclick="filterItems('NON_VEG')">Non-Veg</button>
-        <button onclick="filterItems('popular')">Popular</button>
-    </div>
+    <div th:replace="fragments/header.html"></div>
+    <div class="hero">
+        <div class="menu-filters">
+            <button onclick="filterItems('all')">All</button>
+            <button onclick="filterItems('VEG')">Veg</button>
+            <button onclick="filterItems('NON_VEG')">Non-Veg</button>
+            <button onclick="filterItems('popular')">Popular</button>
+        </div>
 
-    <main>
-        <section class="menu">
-
-            <div class="accordion">
-                <!-- Iterate over categories -->
-                <div th:each="entry : ${menuItemsGroupedByCategory}" class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span th:text="${entry.key}"></span>
-                        <span th:text="'(' + ${entry.value.size()} + ')'"></span> <!-- Item Count -->
-                    </div>
-                    <div class="accordion-content">
-                        <!-- Iterate over menu items within the category -->
-                        <div th:each="menuItem : ${entry.value}" class="menu-item" th:data-type="${menuItem.type}">
-                            <div class="left">
-                                <ul>
-                                    <li class="dish-header">
-                                        <h2 class="dish-name" th:text="${menuItem.name}"></h2>
-                                        <span class="price" th:text="'₹' + ${menuItem.price}"></span>
-                                    </li>
-                                    <li class="rating">
-                                        Rating:
-                                        <span th:each="i : ${#numbers.sequence(1, menuItem.rating.intValue())}">★</span>
-                                        <span
-                                            th:each="i : ${#numbers.sequence(1, 5 - menuItem.rating.intValue())}">☆</span>
-                                    </li>
-                                    <li th:text="${menuItem.type == 'VEG' ? 'VEG' : 'NON_VEG'}"
-                                        th:classappend="${menuItem.type == 'VEG' ? 'veg' : 'nonveg'}"></li>
-                                    <li class="description" th:text="${menuItem.description}"></li>
-                                </ul>
-                            </div>
-                            <div class="right">
-                                <img th:src="@{${menuItem.imageUrl}}" th:alt="${menuItem.name}">
-                                <form th:action="@{/customer/menu/add-to-cart}" method="post">
-                                    <input type="hidden" name="menuItemId" th:value="${menuItem.id}">
-                                    <input type="hidden" name="restaurantId" th:value="${restaurantId}">
-                                    <button class="add-to-cart" type="submit">Add to Cart</button>
-                                </form>
+        <main>
+            <section class="menu">
+                <div class="accordion">
+                    <!-- Iterate over categories -->
+                    <div th:each="entry : ${menuItemsGroupedByCategory}" class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span th:text="${entry.key}"></span>
+                            <span th:text="'(' + ${entry.value.size()} + ')'"></span> <!-- Item Count -->
+                        </div>
+                        <div class="accordion-content">
+                            <!-- Iterate over menu items within the category -->
+                            <div th:each="menuItem : ${entry.value}" class="menu-item" th:data-type="${menuItem.type}">
+                                <div class="left">
+                                    <ul>
+                                        <li class="dish-header">
+                                            <h2 class="dish-name" th:text="${menuItem.name}"></h2>
+                                            <span class="price" th:text="'₹' + ${menuItem.price}"></span>
+                                        </li>
+                                        <li class="rating">
+                                            Rating:
+                                            <span
+                                                th:each="i : ${#numbers.sequence(1, menuItem.rating.intValue())}">★</span>
+                                            <span
+                                                th:each="i : ${#numbers.sequence(1, 5 - menuItem.rating.intValue())}">☆</span>
+                                        </li>
+                                        <li th:text="${menuItem.type == 'VEG' ? 'VEG' : 'NON_VEG'}"
+                                            th:classappend="${menuItem.type == 'VEG' ? 'veg' : 'nonveg'}"></li>
+                                        <li class="description" th:text="${menuItem.description}"></li>
+                                    </ul>
+                                </div>
+                                <div class="right">
+                                    <img th:src="@{${menuItem.imageUrl}}" th:alt="${menuItem.name}">
+                                    <form th:action="@{/customer/menu/add-to-cart}" method="post">
+                                        <input type="hidden" name="menuItemId" th:value="${menuItem.id}">
+                                        <input type="hidden" name="restaurantId" th:value="${restaurantId}">
+                                        <button class="add-to-cart" type="submit">Add to Cart</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
+        </main>
+    </div>
+
+    <!-- View Cart Button -->
+    <div id="viewCartButton" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <a href="/customer/checkout" class="btn btn-primary">View Cart</a>
+    </div>
+
+    <div th:replace="fragments/footer.html"></div>
 
     <script>
         function toggleAccordion(header) {
@@ -303,6 +303,7 @@
                 toggleAccordion(firstAccordionHeader); // Opens the first accordion
             }
         };
+
 
     </script>
 

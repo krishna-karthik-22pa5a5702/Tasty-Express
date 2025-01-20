@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -46,6 +47,7 @@ public class SpringSecurity {
                 ).logout(
                         logout -> logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessHandler(customLogoutHandler()) // Use the custom logout handler
                                 .permitAll()
                 );
         return http.build();
@@ -67,6 +69,25 @@ public class SpringSecurity {
             }
              else {
                 response.sendRedirect("/"); // Default redirect if no role matches
+            }
+        };
+    }
+
+    @Bean
+    public LogoutSuccessHandler customLogoutHandler() {
+        return (request, response, authentication) -> {
+            // Check roles and redirect accordingly after logout
+            if (authentication != null && authentication.getAuthorities().stream()
+                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+                response.sendRedirect("/login"); // Redirect after admin logout
+            } else if (authentication != null && authentication.getAuthorities().stream()
+                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_RESTAURANT"))) {
+                response.sendRedirect("/login"); // Redirect after restaurant logout
+            } else if (authentication != null && authentication.getAuthorities().stream()
+                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_CUSTOMER"))) {
+                response.sendRedirect("/"); // Redirect after customer logout
+            } else {
+                response.sendRedirect("/login"); // Default redirect if no role matches
             }
         };
     }

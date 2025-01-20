@@ -1,6 +1,7 @@
 package registerationlogin.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Restaurant {
     private String address;
     private String phoneNumber;
     private String email;
+    private Integer rating;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Category> categories;

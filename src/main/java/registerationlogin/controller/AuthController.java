@@ -25,10 +25,17 @@ public class AuthController {
 
 
     //handler method to handle home page.
-    @GetMapping("/")
+    // @GetMapping("/")
+    // public String home(){
+    //     return "index"; 
+    // }
+
+
+     @GetMapping("/")
     public String home(){
-        return "index"; 
+        return "home_copy"; 
     }
+
 
     //handler method to handle user registeration form request.
 

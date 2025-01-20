@@ -45,8 +45,10 @@ public class CustomerController {
 
     //handler methods for getting list of restaurant.
     @GetMapping("/home")
-    public String customer(){
-        return "customer";
+    public String customer(Model model){
+        List<Restaurant> restaurants = restaurantService.getTopRestaurants();
+        model.addAttribute("restaurants", restaurants);
+        return "home_copy_2";
     }
 
     @GetMapping("/restaurant-list")
@@ -75,9 +77,14 @@ public class CustomerController {
     }
 
     userRepository.save(user);
+    
 
+
+    
         restaurantService.saveRestaurant(restaurant);
-        return "redirect:/restaurant/restaurant-dashboard";
+
+        // return "redirect:/restaurant/restaurant-dashboard";
+        return "redirect:/login";
     }
 
     @GetMapping("/menu")
@@ -92,9 +99,13 @@ public class CustomerController {
 
     @GetMapping("/restaurant-menu/{restaurantId}")
     public String restaurantMenu(@PathVariable Long restaurantId,Model model) {
+        System.out.println("This is the restaurant id: " + restaurantId);
         // List<UserMenuDto> menuItems = menuItemService.findAllItemsForUser();
         Map<String, List<MenuItem>> menuItemsGroupedByCategory = menuItemService.findAllItemsGroupByCategoryByRestaurantId(restaurantId);
+        System.out.println("This is the menuItemsGroupedByCategory: " + menuItemsGroupedByCategory);
+
         // model.addAttribute("menuItems", menuItems);
+
         model.addAttribute("menuItemsGroupedByCategory", menuItemsGroupedByCategory);
         model.addAttribute("restaurantId", restaurantId);
         return "user-menu";

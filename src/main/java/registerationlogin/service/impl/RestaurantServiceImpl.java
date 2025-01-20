@@ -23,6 +23,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.findAll();
     }
 
+    // i want only 8 restaraunts to be displayed on the home page its condition will apply in future for now it will return all the restaraunts
+    @Override
+    public List<Restaurant> getTopRestaurants() {
+        return restaurantRepository.findTop8ByOrderByRatingDesc();
+    }    
+
+
     @Override
     public Restaurant getRestaurantById(Long id) {
         return restaurantRepository.findById(id).orElse(null);
@@ -35,6 +42,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         if (existingRestaurant.isPresent()) {
             throw new IllegalArgumentException("Restaurant with this name already exists.");
+        }
+        if(restaurant.getRating() == null){
+            restaurant.setRating(0);
         }
         restaurantRepository.save(restaurant); // Save the new restaurant to the database
         return restaurant;

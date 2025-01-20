@@ -45,3 +45,82 @@
         </div>
     </div>
 </nav>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    .features {
+        padding: 50px 15px;
+        text-align: center;
+        background-color: #ffffff;
+    }
+
+    .features h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #2e7d32;
+    }
+
+    .features .feature {
+        margin: 20px 0;
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: #43a047;
+        margin-bottom: 10px;
+    }
+
+    footer {
+        background-color: #2e7d32;
+        color: #fff;
+        text-align: center;
+        padding: 15px 0;
+    }
+
+    footer a {
+        color: #a5d6a7;
+        /* Light green */
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Why Choose Us?</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-4 feature">
+                <i class="bi bi-basket feature-icon"></i>
+                <h4>Wide Selection</h4>
+                <p>Choose from a wide variety of cuisines and dishes.</p>
+            </div>
+            <div class="col-md-4 feature">
+                <i class="bi bi-clock feature-icon"></i>
+                <h4>Fast Delivery</h4>
+                <p>Hot meals delivered quickly to your doorstep.</p>
+            </div>
+            <div class="col-md-4 feature">
+                <i class="bi bi-star feature-icon"></i>
+                <h4>Top Rated</h4>
+                <p>Trusted by thousands of happy customers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Food Express. All Rights Reserved.</p>
+        <p>
+            <a href="#" th:href="@{/privacy}">Privacy Policy</a> |
+            <a href="#" th:href="@{/terms}">Terms of Service</a>
+        </p>
+    </footer>
+</body>
+
+</html>

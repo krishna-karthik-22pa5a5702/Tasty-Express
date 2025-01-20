@@ -1,59 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #eafaf1;
+        margin: 0;
+        padding: 0;
+    }
+    .features {
+        padding: 50px 15px;
+        text-align: center;
+        background-color: #ffffff;
+    }
+
+    .features h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #2e7d32;
+    }
+
+    .features .feature {
+        margin: 20px 0;
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: #43a047;
+        margin-bottom: 10px;
+    }
+
+    footer {
+        background-color: #2e7d32;
+        color: #fff;
+        text-align: center;
+        padding: 15px 0;
+    }
+
+    footer a {
+        color: #a5d6a7;
+        /* Light green */
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+</style>
 
 <body>
-    <footer style="background-color: #f8f8f8; padding: 20px 0; font-family: Arial, sans-serif; color: #555;">
-        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between;">
-
-            <!-- Company Info -->
-            <div style="flex: 1; min-width: 200px; margin: 10px;">
-                <h4 style="color: #333; margin-bottom: 10px;">About Us</h4>
-                <p style="font-size: 14px; line-height: 1.5;">
-                    Your go-to platform for ordering food from the best restaurants around you. Delicious meals at your
-                    doorstep.
-                </p>
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Why Choose Us?</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-4 feature">
+                <i class="bi bi-basket feature-icon"></i>
+                <h4>Wide Selection</h4>
+                <p>Choose from a wide variety of cuisines and dishes.</p>
             </div>
-
-            <!-- Quick Links -->
-            <div style="flex: 1; min-width: 200px; margin: 10px;">
-                <h4 style="color: #333; margin-bottom: 10px;">Quick Links</h4>
-                <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.8;">
-                    <li><a href="/about" style="text-decoration: none; color: #555;">About Us</a></li>
-                    <li><a href="/contact" style="text-decoration: none; color: #555;">Contact</a></li>
-                    <li><a href="/privacy-policy" style="text-decoration: none; color: #555;">Privacy Policy</a></li>
-                    <li><a href="/terms" style="text-decoration: none; color: #555;">Terms & Conditions</a></li>
-                </ul>
+            <div class="col-md-4 feature">
+                <i class="bi bi-clock feature-icon"></i>
+                <h4>Fast Delivery</h4>
+                <p>Hot meals delivered quickly to your doorstep.</p>
             </div>
-
-            <!-- Customer Support -->
-            <div style="flex: 1; min-width: 200px; margin: 10px;">
-                <h4 style="color: #333; margin-bottom: 10px;">Customer Support</h4>
-                <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.8;">
-                    <li><a href="/faq" style="text-decoration: none; color: #555;">FAQs</a></li>
-                    <li><a href="/support" style="text-decoration: none; color: #555;">Support</a></li>
-                    <li><a href="/feedback" style="text-decoration: none; color: #555;">Feedback</a></li>
-                </ul>
-            </div>
-
-            <!-- Social Media Links -->
-            <div style="flex: 1; min-width: 200px; margin: 10px;">
-                <h4 style="color: #333; margin-bottom: 10px;">Follow Us</h4>
-                <div style="font-size: 24px;">
-                    <a href="https://www.facebook.com" target="_blank"
-                        style="margin-right: 15px; color: #555;">&#x1F426;</a>
-                    <a href="https://www.twitter.com" target="_blank"
-                        style="margin-right: 15px; color: #555;">&#x1F426;</a>
-                    <a href="https://www.instagram.com" target="_blank"
-                        style="margin-right: 15px; color: #555;">&#x1F426;</a>
-                </div>
+            <div class="col-md-4 feature">
+                <i class="bi bi-star feature-icon"></i>
+                <h4>Top Rated</h4>
+                <p>Trusted by thousands of happy customers.</p>
             </div>
         </div>
+    </section>
 
-        <!-- Footer Bottom -->
-        <div
-            style="border-top: 1px solid #ddd; margin-top: 20px; text-align: center; padding-top: 10px; font-size: 14px;">
-            &copy; 2024 Foodly. All Rights Reserved. | Designed with ❤️
-        </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Food Express. All Rights Reserved.</p>
+        <p>
+            <a href="#" th:href="@{/privacy}">Privacy Policy</a> |
+            <a href="#" th:href="@{/terms}">Terms of Service</a>
+        </p>
     </footer>
 </body>
 

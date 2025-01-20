@@ -50,7 +50,7 @@ public class CheckoutController {
 
         if (cart == null || cart.getCartItems() == null || cart.getCartItems().isEmpty()) {
             model.addAttribute("error", "Your cart is empty!");
-            return "redirect:/customer/checkout"; // Redirect to home page with an error message
+            return "redirect:/customer/restaurant-list"; // Redirect to home page with an error message
         }
 
         // Fetch the restaurant details from the first menu item in the cart via the category
@@ -72,7 +72,7 @@ public class CheckoutController {
         
        if (restaurant == null) {
             model.addAttribute("error", "Unable to fetch restaurant details for the items in your cart.");
-            return "redirect:/customer/checkou"; // Load checkout page with an error message
+            return "redirect:/customer/restaurant-list"; // Load checkout page with an error message
         }
 
         model.addAttribute("cart", cart);
