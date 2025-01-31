@@ -1,7 +1,6 @@
 package registerationlogin.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +19,25 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // step 1
     private String name;
-    private String address;
+    private String ownerName;
     private String phoneNumber;
+    private String alternateContact;
     private String email;
+    // step 2
+    private String address;
+    private String latitude;
+    private String longitude;
+    // step 3
+    private String acceptedPaymentMethods;  // Comma-separated string for payment methods
+    private String bankName;
+    private String accountNumber;
+
+    // step 4
+    private String imageUrl;
+
+
     private Integer rating;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)

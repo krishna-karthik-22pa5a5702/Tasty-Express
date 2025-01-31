@@ -104,7 +104,17 @@
             justify-content: space-between;
         }
 
+        /* .location-box {
+            background-color: #f1f1f1;
+            border-radius: 25px;
+            padding: 10px;
+            max-width: 300px;
+            width: 100%;
+        } */
+
         .location-box {
+            position: relative;
+            /* Added to position dropdown relative to this box */
             background-color: #f1f1f1;
             border-radius: 25px;
             padding: 10px;
@@ -290,6 +300,103 @@
             background-color: #1b5e20;
         }
 
+        /* .location-dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            width: 300px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        } */
+
+        .location-dropdown {
+            position: absolute;
+            /* Ensures dropdown is placed below the input */
+            top: 100%;
+            /* Aligns dropdown right below .location-box */
+            left: 0;
+            /* Aligns dropdown with .location-box */
+            width: 100%;
+            /* Matches width of .location-box */
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            /* Initially hidden */
+            z-index: 1000;
+        }
+
+        .location-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border: none;
+            background: #4caf50;
+            color: white;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .location-dropdown button:hover {
+            background: #388e3c;
+        }
+
+        #manualLocationInput {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #8dba70;
+            border-radius: 4px;
+        }
+
+        #suggestionsList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #suggestionsList li {
+            padding: 8px;
+            cursor: pointer;
+            color: #000;
+        }
+
+        #suggestionsList li:hover {
+            color: #000;
+            background: #6a8e5e;
+        }
+
+        #suggestionsList {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        #suggestionsList li {
+            padding: 10px;
+            cursor: pointer;
+            list-style: none;
+            color: black;
+            background-color: white;
+        }
+
+        #suggestionsList li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .parent-container {
+            position: relative;
+        }
+
+
 
         @media (max-width: 768px) {
             .hero h1 {
@@ -331,10 +438,22 @@
         <!-- Location Selector and Search Bar -->
         <div class="search-bar-container">
             <!-- Location Selector -->
-            <div class="location-box">
+            <div class="location-box" id="locationBox">
                 <span class="location-icon">&#x1F4CD;</span>
-                <input type="text" class="location-input" id="locationInput" th:value="${userLocation}" readonly>
+                <input type="text" class="location-input" id="locationInput" placeholder="Select your location"
+                    readonly>
+
+                <!-- Dropdown for Location Options -->
+                <div id="locationOptions" class="location-dropdown">
+                    <button onclick="detectMyLocation()">📍 Detect My Location</button>
+                    <input type="text" id="manualLocationInput" placeholder="Type your location..."
+                        oninput="searchLocation(this.value)">
+                    <ul id="suggestionsList"></ul>
+                </div>
             </div>
+
+
+
 
             <!-- Search Bar -->
             <div class="search-box">
@@ -469,6 +588,88 @@
         </div>
     </div>
     <div th:replace="fragments/footer.html"></div>
+
+    <script>
+        const apiKey = "7M4e0F1fGGpOzfHfwt8OhrlZ0d2GS7nV"; // Replace with your TomTom API Key
+
+        // Show dropdown on click
+        document.getElementById("locationBox").addEventListener("click", function () {
+            document.getElementById("locationOptions").style.display = "block";
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            const dropdown = document.getElementById("locationOptions");
+            if (!document.getElementById("locationBox").contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = "none";
+            }
+        });
+
+        // Detect Current Location
+        function detectMyLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async function (position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    document.getElementById("locationInput").value = `Latitude: ${lat}, Longitude: ${lon}`;
+
+                    // Convert coordinates to an address
+                    const address = await reverseGeocode(lat, lon);
+                    document.getElementById("locationInput").value = address;
+                }, function () {
+                    alert("Location access denied.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Reverse Geocoding (Convert Lat, Lon to Address)
+        async function reverseGeocode(lat, lon) {
+            try {
+                const response = await fetch(`https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=${apiKey}`);
+                const data = await response.json();
+                return data.addresses[0]?.address.freeformAddress || "Location not found";
+            } catch (error) {
+                console.error("Reverse Geocoding Error:", error);
+                return "Error fetching address";
+            }
+        }
+
+        // Autocomplete for Manual Location Input
+        async function searchLocation(query) {
+            if (query.length < 3) return;
+
+            const response = await fetch(`https://api.tomtom.com/search/2/search/${query}.json?key=${apiKey}&limit=5`);
+            const data = await response.json();
+
+            const suggestions = data.results.map(result => ({
+                address: result.address.freeformAddress,
+                lat: result.position.lat,
+                lon: result.position.lon
+            }));
+
+            displaySuggestions(suggestions);
+        }
+
+        // Display Search Suggestions
+        function displaySuggestions(suggestions) {
+            const suggestionsList = document.getElementById("suggestionsList");
+            suggestionsList.innerHTML = "";
+
+            suggestions.forEach(suggestion => {
+                const li = document.createElement("li");
+                li.textContent = suggestion.address;
+                li.addEventListener("click", function () {
+                    document.getElementById("locationInput").value = suggestion.address;
+                    document.getElementById("locationOptions").style.display = "none";
+                    console.log("Selected Location:", suggestion.lat, suggestion.lon);
+                });
+                suggestionsList.appendChild(li);
+            });
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>

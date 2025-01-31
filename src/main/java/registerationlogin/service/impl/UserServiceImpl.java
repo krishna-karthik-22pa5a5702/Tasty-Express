@@ -67,4 +67,9 @@ public class UserServiceImpl implements UserService {
         role.setName("ROLE_CUSTOMER");
         return roleRepository.save(role);
     }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
 }

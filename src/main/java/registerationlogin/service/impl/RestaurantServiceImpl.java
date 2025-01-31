@@ -35,7 +35,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.findById(id).orElse(null);
     }
 
-
     @Override
     public Restaurant saveRestaurant(Restaurant restaurant) {
         Optional<Restaurant> existingRestaurant = restaurantRepository.findByName(restaurant.getName());

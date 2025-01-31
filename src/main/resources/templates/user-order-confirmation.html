@@ -102,6 +102,9 @@
                 <h4>Order Details</h4>
                 <hr>
                 <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+                <p><strong>Restaurant ID:</strong> <span th:text="${order.restaurant.id}"></span></p>
+                <p><strong>User ID:</strong> <span th:text="${order.user.id}"></span></p>
+
                 <!-- <p><strong>Placed On:</strong> <span th:text="${#dates.format(order.placedDate, 'dd-MM-yyyy HH:mm')}"></span></p> -->
                 <p><strong>Items Ordered:</strong></p>
                 <ul>
@@ -139,6 +142,11 @@
 
             <div class="text-center">
                 <a href="/customer/restaurant-list" class="btn btn-back mt-3">Go to Dashboard</a>
+                <!-- Feedback Button -->
+                <a th:href="@{/customer/feedback/form/{restaurantId}/{customerId}(restaurantId=${order.restaurant.id}, customerId=${order.user.id})}"
+                    class="btn btn-back mt-3">Feedback</a>
+
+
             </div>
         </div>
     </div>
