@@ -74,7 +74,7 @@ public class CustomerController {
     @GetMapping("/restaurants/new")
     public String newRestaurant(Model model) {
         model.addAttribute("restaurant", new Restaurant());
-        return "restaurant_form_copy_copy";
+        return "restaurant_form";
     }
 
     @PostMapping("/restaurants/save")
