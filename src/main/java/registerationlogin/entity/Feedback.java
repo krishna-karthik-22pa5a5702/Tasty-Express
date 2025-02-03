@@ -1,5 +1,7 @@
 package registerationlogin.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -29,4 +31,13 @@ public class Feedback {
 
     @Column(length = 1000)
     private String comment;
+
+    private LocalDateTime submissionDate; // Store the submission date
+
+    @PrePersist
+    public void prePersist() {
+        if (this.submissionDate == null) {
+            this.submissionDate = LocalDateTime.now(); // Set default to current date-time
+        }
+    }
 }

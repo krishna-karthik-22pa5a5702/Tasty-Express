@@ -19,74 +19,81 @@
 
         .restaurants-container {
             padding: 20px;
-        }
-
-        .restaurants {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            overflow-x: auto;
-            padding: 2rem;
             justify-content: center;
         }
 
-        .restaurants h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .restaurants {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            padding: 2rem;
+            justify-content: center;
+            max-width: 1000px;
+            /* Keeps the grid centered */
+            width: 100%;
         }
 
+
         .restaurant-card {
-            background-color: white;
+            display: block;
+            position: relative;
+            width: 100%;
+            max-width: 320px;
             border: 1px solid #ddd;
-            padding: 1.5rem;
             border-radius: 8px;
-            min-width: 300px;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .restaurant-card:hover {
             transform: scale(1.03);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-color: #388E3C;
         }
 
-        .restaurant-card h2 {
-            margin: 0;
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .restaurant-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .restaurant-name {
+            font-size: 1.3rem;
+            font-weight: bold;
             color: #333;
+            margin-bottom: 5px;
         }
 
-        .restaurant-card p {
-            font-size: 0.9rem;
-            margin: 1rem 0;
-            color: #555;
-        }
-
-        .restaurant-card .rating {
-            font-size: 1.2rem;
+        .rating {
+            font-size: 1.1rem;
             color: #ffa000;
-            /* Gold for stars */
-            margin-top: 10px;
+            margin-bottom: 8px;
         }
 
-        .restaurant-card .rating span {
-            margin-right: 2px;
-            /* Add spacing between stars */
+        .restaurant-address {
+            font-size: 0.9rem;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
 
 <body>
-    <div th:replace="fragments/header.html"></div>
+    <div th:replace="fragments/user-dashboard-header.html"></div>
     <div class="hero">
-        <div class="restaurants-container">
+        <!-- <div class="restaurants-container">
             <br>
             <section class="restaurants">
                 <a th:each="restaurant : ${restaurants}" th:href="@{'/customer/restaurant-menu/' + ${restaurant.id}}"
@@ -96,12 +103,39 @@
                     <p th:text="${restaurant.address}" style="color: #666;"></p>
                     <p class="rating">
                         Rating:
-                        <span th:each="i : ${#numbers.sequence(1, restaurant.rating.intValue())}">★</span>
+                        <span th:if="${restaurant.rating.intValue() > 0}"
+                            th:each="i : ${#numbers.sequence(1, restaurant.rating.intValue())}">★</span>
                         <span th:each="i : ${#numbers.sequence(1, 5 - restaurant.rating.intValue())}">☆</span>
                     </p>
                 </a>
             </section>
+        </div> -->
+
+
+        <div class="restaurants-container">
+            <section class="restaurants">
+                <a th:each="restaurant : ${restaurants}" th:href="@{'/customer/restaurant-menu/' + ${restaurant.id}}"
+                    class="restaurant-card">
+
+                    <div class="restaurant-image" th:style="'background-image: url(' + ${restaurant.imageUrl} + ');'">
+                    </div>
+
+                    <div class="restaurant-info">
+                        <div class="restaurant-name" th:text="${restaurant.name}"></div>
+
+                        <div class="rating">
+                            <span th:if="${restaurant.rating.intValue() > 0}"
+                                th:each="i : ${#numbers.sequence(1, restaurant.rating.intValue())}">★</span>
+                            <span th:if="${restaurant.rating.intValue() < 5}"
+                                th:each="i : ${#numbers.sequence(1, 5 - restaurant.rating.intValue())}">☆</span>
+                        </div>
+                        
+                        <p class="restaurant-address" th:text="${restaurant.address}"></p>
+                    </div>
+                </a>
+            </section>
         </div>
+
 
     </div>
 

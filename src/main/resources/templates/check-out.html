@@ -50,7 +50,7 @@
             font-size: 1em;
         }
 
-        .btn {
+        .confirm-btn {
             padding: 12px 20px;
             background-color: #5d8aa8;
             color: white;
@@ -62,7 +62,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn:hover {
+        .confirm-btn:hover {
             background-color: #4a708b;
         }
 
@@ -157,7 +157,7 @@
 
 <body>
 
-    <div th:replace="fragments/header.html"></div>
+    <div th:replace="fragments/check-out-header.html"></div>
 
     <div class="hero">
         <h2 style="text-align: center; color: #333;">Checkout</h2>
@@ -187,7 +187,7 @@
                     <input type="hidden" name="restaurantId" th:value="${restaurant.id}" />
                     <!-- Hidden field for restaurant -->
 
-                    <button type="submit" class="btn">Confirm Order</button>
+                    <button type="submit" class="confirm-btn">Confirm Order</button>
                 </form>
             </div>
 
@@ -196,7 +196,7 @@
                 <!-- Display error message if the cart is empty -->
                 <div th:if="${error != null}" style="text-align: center; margin: 10px 0;">
                     <p th:text="${error}" style="color: red; font-weight: bold; font-size: 1.2em;"></p>
-                    <a th:href="@{/customer/restaurant-list}" class="btn">Go to Menu</a>
+                    <a th:href="@{/customer/restaurant-list}" class="confirm-btn">Go to Menu</a>
                 </div>
 
                 <h3>Restaurant Info</h3>
@@ -238,7 +238,7 @@
                                 <td>
                                     <form th:action="@{/customer/cart/remove-item}" method="post">
                                         <input type="hidden" name="cartItemId" th:value="${cartItem.id}">
-                                        <button type="submit" class="btn"
+                                        <button type="submit" class="confirm-btn"
                                             style="background-color: #d9534f;">Remove</button>
                                     </form>
                                 </td>
@@ -255,7 +255,7 @@
                 <div th:if="${cart == null or cart.cartItems == null or cart.cartItems.size() == 0}"
                     class="empty-cart-message">
                     <p>Your cart is empty! Please add items to your cart.</p>
-                    <a th:href="@{/customer/restaurant-list}" class="btn">Go to Menu</a>
+                    <a th:href="@{/customer/restaurant-list}" class="confirm-btn">Go to Menu</a>
                 </div>
             </div>
 
@@ -269,4 +269,5 @@
     <div th:replace="fragments/footer.html"></div>
 
 </body>
+
 </html>

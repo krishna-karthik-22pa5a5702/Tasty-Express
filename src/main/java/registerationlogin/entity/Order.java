@@ -1,5 +1,6 @@
 package registerationlogin.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import jakarta.persistence.*;
@@ -28,6 +29,8 @@ public class Order {
     private Double totalPrice;
     private String orderStatus;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime orderDate;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -40,5 +43,10 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-
+    @PrePersist
+    protected void onCreate() {
+        if (this.orderDate == null) {
+            this.orderDate = LocalDateTime.now();
+        }
+    }
 }

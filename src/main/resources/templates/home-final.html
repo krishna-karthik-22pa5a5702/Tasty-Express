@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Express - Order Your Favorite Meals</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eafaf1;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            /* position: fixed; */
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            margin-top: 10px;
+            /* Slightly transparent white */
+        }
+
+        .header .brand {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            /* Rich green */
+            text-decoration: none;
+            padding-left: 60px;
+        }
+
+        .header .nav-links a {
+            margin-left: 15px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #2e7d32;
+            transition: color 0.3s ease;
+        }
+
+        .header .nav-links a:hover {
+            color: #1b5e20;
+            /* Darker green */
+        }
+
+
+        .hero {
+            background: linear-gradient(140deg, #eafaf1 60%, #388e3c 60%);
+            height: 85vh;
+            color: white;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 60px;
+            padding-left: 80px;
+            padding-right: 80px;
+            position: relative;
+        }
+
+
+        .hero .left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 50%;
+            z-index: 2;
+        }
+
+        .hero .left-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #388e3c;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+            
+        }
+
+        .hero .left-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #333333;
+            font-weight: 400;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Delivery Man Image (Placed Exact on Text) */
+        .hero .delivery-man {
+            position: absolute;
+            top: 8%;
+            left: 5%;
+            width: 220px;
+            z-index: 3;
+            animation: moveLeftToRight 5s infinite alternate ease-in-out;
+        }
+
+        /* Keyframes for the left to right animation */
+        @keyframes moveLeftToRight {
+            0% {
+                left: 5%;
+                /* Starting position */
+            }
+
+            100% {
+                left: 40%;
+                /* Move to the far right */
+            }
+        }
+
+
+
+        /* Right Content (Food Image) */
+        .hero .right-content {
+            width: 50%;
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .single-food-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            /* Smooth transition for scaling */
+
+        }
+
+        .hero .single-food-image:hover {
+            transform: scale(1.1);
+
+        }
+
+        /* Dish Categories Section */
+        .categories-container {
+            /* margin-top: 40px; */
+            padding: 20px;
+        }
+
+        .categories-container h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            /* flex-wrap: wrap; */
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .category {
+            text-align: center;
+            width: 200px;
+            padding: 10px;
+        }
+
+        .category img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .category img:hover {
+            transform: scale(1.1);
+        }
+
+        .category p {
+            font-size: 1.2rem;
+            color: #2d6a4f;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .category a {
+            text-decoration: none;
+            color: #2d6a4f;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .hero .left-content {
+                width: 100%;
+            }
+
+            .hero .delivery-man {
+                width: 180px;
+                top: 15%;
+            }
+
+            .hero .right-content {
+                width: 100%;
+            }
+
+            .hero .single-food-image {
+                width: 80%;
+            }
+
+            .header .nav-links {
+                flex-direction: column;
+            }
+
+            .header .nav-links a {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="brand">Food Express</a>
+        <div class="nav-links">
+            <!-- <a href="#" th:href="@{/restaurants/new}">Add Restaurant</a> -->
+            <a href="#" th:href="@{/login}">Login</a>
+            <a href="#" th:href="@{/register}">Sign Up</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <!-- <div class="hero">
+        <h1>Welcome to Food Express</h1>
+        <p>Delicious meals delivered right to your doorstep.</p>
+
+        <div class="search-bar-container">
+            <div class="location-box">
+                <span class="location-icon">&#x1F4CD;</span>
+                <input type="text" class="location-input" id="locationInput" th:value="${userLocation}" readonly>
+            </div>
+
+            <div class="search-box">
+                <input type="text" placeholder="Search for meals, restaurants..." class="search-input" id="searchInput"
+                    th:value="${searchQuery}">
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="hero">
+        <!-- Left Content (Text) -->
+        <div class="left-content">
+            <h1>Welcome to Food Express</h1>
+            <p>Delicious meals delivered right to your doorstep.</p>
+        </div>
+
+        <!-- Delivery Man Image (Placed Exact on Text) -->
+        <img src="https://res.cloudinary.com/ddn1hxi8k/image/upload/v1738416022/DeliveryMan_Image_x16tri.png"
+            alt="Delivery Man" class="delivery-man">
+
+        <!-- Right Content (Food Image) -->
+        <div class="right-content">
+            <img src="https://res.cloudinary.com/ddn1hxi8k/image/upload/v1738415792/Single_Image_hfcbp5.webp" alt="Food"
+                class="single-food-image">
+        </div>
+    </div>
+
+    <!-- Dish Categories Section -->
+    <!-- <div class="categories-container">
+        <h2>Explore Our Dishes</h2>
+        <div class="categories">
+            <div class="category" th:each="dish : ${dishes}">
+                <a th:href="@{/dish/{id}(id=${dish.id})}">
+                    <img th:src="@{${dish.imageUrl}}" alt="Dish" />
+                    <p th:text="${dish.name}"></p>
+                </a>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Dish Categories Section -->
+    <div class="categories-container">
+        <h2>Explore Our Dishes</h2>
+        <div class="categories">
+            <div class="category">
+                <a href="/dish/1">
+                    <img src="https://b.zmtcdn.com/data/o2_assets/bf2d0e73add1c206aeeb9fec762438111727708719.png"
+                        alt="Biryani">
+                    <p>Biryani</p>
+                </a>
+            </div>
+            <div class="category">
+                <a href="/dish/2">
+                    <img src="https://b.zmtcdn.com/data/o2_assets/d0bd7c9405ac87f6aa65e31fe55800941632716575.png"
+                        alt="Pizza">
+                    <p>Pizza</p>
+                </a>
+            </div>
+            <div class="category">
+                <a href="/dish/3">
+                    <img src="https://b.zmtcdn.com/data/dish_images/ccb7dc2ba2b054419f805da7f05704471634886169.png"
+                        alt="Burger">
+                    <p>Burger</p>
+                </a>
+            </div>
+            <div class="category">
+                <a href="/dish/4">
+                    <img src="https://b.zmtcdn.com/data/dish_images/c2f22c42f7ba90d81440a88449f4e5891634806087.png"
+                        alt="Rolls">
+                    <p>Rolls</p>
+                </a>
+            </div>
+
+            <div class="category">
+                <a href="/dish/4">
+                    <img src="https://b.zmtcdn.com/data/dish_images/d5ab931c8c239271de45e1c159af94311634805744.png"
+                        alt="Cake">
+                    <p>Cake</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Top brands Section -->
+    <div class="categories-container">
+        <h2>Top brands for you</h2>
+        <div class="categories">
+            <div class="category">
+                <a href="/dish/1">
+                    <img src="https://b.zmtcdn.com/data/brand_creatives/logos/775f928725d1a9dd80422632de22c224_1611377090.png?output-format=webp"
+                        alt="McDonald's">
+                    <p>McDonald's</p>
+                </a>
+            </div>
+            <div class="category">
+                <a href="/dish/2">
+                    <img src="https://b.zmtcdn.com/data/brand_creatives/logos/1a985408ca7ad8fd097f2c47db9c5cb6_1611252811.png?output-format=webp"
+                        alt="Domino's Pizza">
+                    <p>Domino's Pizza</p>
+                </a>
+            </div>
+            <div class="category">
+                <a href="/dish/3">
+                    <img src="https://b.zmtcdn.com/data/brand_creatives/logos/f1dc700c8be881b9a17be904971a0644_1726664269.png?output-format=webp"
+                        alt="KFC">
+                    <p>KFC</p>
+                </a>
+            </div>
+            <div class="category">
+                <a href="/dish/4">
+                    <img src="https://b.zmtcdn.com/data/brand_creatives/logos/c38f7540bcc5a38e918856ac06409056_1504531339.png?output-format=webp"
+                        alt="Pizza Hut">
+                    <p>Pizza Hut</p>
+                </a>
+            </div>
+
+            <div class="category">
+                <a href="/dish/5">
+                    <img src="https://b.zmtcdn.com/data/brand_creatives/logos/47c22bbd5043ef52b80a4e3d3409a368_1626810701.png?output-format=webp"
+                        alt="Behrouz Biryani">
+                    <p>Behrouz Biryani</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- <section class="restaurants">
+        <h2>Discover Restaurants Near You</h2>
+        <a th:each="restaurant : ${restaurants}" th:href="@{'/customer/restaurant-menu/' + ${restaurant.id}}"
+            class="restaurant-card">
+            <h2 th:text="${restaurant.name}"></h2>
+            <p th:text="${restaurant.phoneNumber}" style="color: #666;"></p>
+            <p th:text="${restaurant.address}" style="color: #666;"></p>
+            <p class="rating">
+                Rating:
+                <span th:each="i : ${#numbers.sequence(1, restaurant.rating.intValue())}">★</span>
+                <span th:each="i : ${#numbers.sequence(1, 5 - restaurant.rating.intValue())}">☆</span>
+            </p>
+        </a>
+    </section> -->
+
+    <div th:replace="fragments/footer.html"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+</body>
+
+</html>

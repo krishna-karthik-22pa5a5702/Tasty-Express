@@ -12,9 +12,9 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .hero {
-            margin-top: 80px;
+            margin-top: 120px;
         }
 
         .menu-filters {
@@ -203,7 +203,8 @@
 </head>
 
 <body>
-    <div th:replace="fragments/header.html"></div>
+    <div th:replace="fragments/user-menu-header.html"></div>
+
     <div class="hero">
         <div class="menu-filters">
             <button onclick="filterItems('all')">All</button>
@@ -232,9 +233,14 @@
                                         </li>
                                         <li class="rating">
                                             Rating:
-                                            <span
+                                            <!-- <span th:if="${menuItem.rating.intValue() > 0}"
                                                 th:each="i : ${#numbers.sequence(1, menuItem.rating.intValue())}">★</span>
                                             <span
+                                                th:each="i : ${#numbers.sequence(1, 5 - menuItem.rating.intValue())}">☆</span> -->
+
+                                            <span th:if="${menuItem.rating.intValue() > 0}"
+                                                th:each="i : ${#numbers.sequence(1, menuItem.rating.intValue())}">★</span>
+                                            <span th:if="${menuItem.rating.intValue() < 5}"
                                                 th:each="i : ${#numbers.sequence(1, 5 - menuItem.rating.intValue())}">☆</span>
                                         </li>
                                         <li th:text="${menuItem.type == 'VEG' ? 'VEG' : 'NON_VEG'}"
@@ -258,10 +264,10 @@
         </main>
     </div>
 
-    <!-- View Cart Button -->
+    <!-- View Cart Button
     <div id="viewCartButton" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
         <a href="/customer/checkout" class="btn btn-primary">View Cart</a>
-    </div>
+    </div> -->
 
     <div th:replace="fragments/footer.html"></div>
 

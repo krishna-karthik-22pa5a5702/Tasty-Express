@@ -218,72 +218,78 @@
 
         .restaurants-container {
             padding: 20px;
-        }
-
-        .restaurants {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            overflow-x: auto;
-            padding: 2rem;
             justify-content: center;
         }
 
-        .restaurants h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .restaurants {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            padding: 2rem;
+            justify-content: center;
+            max-width: 1000px;
+            /* Keeps the grid centered */
+            width: 100%;
         }
 
         .restaurant-card {
-            background-color: white;
+            display: block;
+            position: relative;
+            width: 100%;
+            max-width: 320px;
             border: 1px solid #ddd;
-            padding: 1.5rem;
             border-radius: 8px;
-            min-width: 300px;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .restaurant-card:hover {
             transform: scale(1.03);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-color: #388E3C;
         }
 
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
 
-        .restaurant-card h2 {
-            margin: 0;
+        .restaurant-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .restaurant-name {
+            font-size: 1.3rem;
+            font-weight: bold;
             color: #333;
+            margin-bottom: 5px;
         }
 
-        .restaurant-card p {
-            font-size: 0.9rem;
-            margin: 1rem 0;
-            color: #555;
-        }
-
-        .restaurant-card .rating {
-            font-size: 1.2rem;
+        .rating {
+            font-size: 1.1rem;
             color: #ffa000;
-            /* Gold for stars */
-            margin-top: 10px;
+            margin-bottom: 8px;
         }
 
-        .restaurant-card .rating span {
-            margin-right: 2px;
-            /* Add spacing between stars */
+        .restaurant-address {
+            font-size: 0.9rem;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .explore-more {
             text-align: center;
             margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .explore-more .btn-primary {
@@ -300,32 +306,18 @@
             background-color: #1b5e20;
         }
 
-        /* .location-dropdown {
-            position: absolute;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            width: 300px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        } */
 
         .location-dropdown {
             position: absolute;
-            /* Ensures dropdown is placed below the input */
             top: 100%;
-            /* Aligns dropdown right below .location-box */
             left: 0;
-            /* Aligns dropdown with .location-box */
             width: 100%;
-            /* Matches width of .location-box */
             background: white;
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             display: none;
-            /* Initially hidden */
             z-index: 1000;
         }
 
@@ -421,7 +413,7 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <a href="/" class="brand">Food Express</a>
+        <a href="/customer/home" class="brand">Food Express</a>
         <div class="nav-links">
             <a href="#" th:href="@{/customer/restaurants/new}">Add Restaurant</a>
             <!-- <a href="#" th:href="@{/login}">Login</a>
@@ -451,9 +443,6 @@
                     <ul id="suggestionsList"></ul>
                 </div>
             </div>
-
-
-
 
             <!-- Search Bar -->
             <div class="search-box">
@@ -517,13 +506,14 @@
                     <p>Cake</p>
                 </a>
             </div>
+
         </div>
     </div>
     </div>
 
     <!-- Top brands Section -->
     <div class="categories-container">
-        <h2>Top brands for you</h2>
+        <h2 style="margin-left:10px">Top brands for you</h2>
         <br>
         <div class="categories">
             <div class="category">
@@ -566,26 +556,35 @@
     </div>
     </div>
 
+    <h2>Discover Restaurants Near You</h2>
+
     <div class="restaurants-container">
-        <h2>Discover Restaurants Near You</h2>
-        <br>
         <section class="restaurants">
             <a th:each="restaurant : ${restaurants}" th:href="@{'/customer/restaurant-menu/' + ${restaurant.id}}"
                 class="restaurant-card">
-                <h2 th:text="${restaurant.name}"></h2>
-                <p th:text="${restaurant.phoneNumber}" style="color: #666;"></p>
-                <p th:text="${restaurant.address}" style="color: #666;"></p>
-                <p class="rating">
-                    Rating:
-                    <span th:each="i : ${#numbers.sequence(1, restaurant.rating.intValue())}">★</span>
-                    <span th:each="i : ${#numbers.sequence(1, 5 - restaurant.rating.intValue())}">☆</span>
-                </p>
+
+                <div class="restaurant-image" th:style="'background-image: url(' + ${restaurant.imageUrl} + ');'">
+                </div>
+
+                <div class="restaurant-info">
+                    <div class="restaurant-name" th:text="${restaurant.name}"></div>
+
+                    <div class="rating">
+                        <span th:if="${restaurant.rating.intValue() > 0}"
+                            th:each="i : ${#numbers.sequence(1, restaurant.rating.intValue())}">★</span>
+                        <span th:if="${restaurant.rating.intValue() < 5}"
+                            th:each="i : ${#numbers.sequence(1, 5 - restaurant.rating.intValue())}">☆</span>
+                    </div>
+
+
+                    <p class="restaurant-address" th:text="${restaurant.address}"></p>
+                </div>
             </a>
         </section>
-        <!-- Explore More Section -->
-        <div class="explore-more">
-            <a href="/customer/restaurant-list" class="btn btn-primary">Explore More</a>
-        </div>
+    </div>
+    <!-- Explore More Section -->
+    <div class="explore-more">
+        <a href="/customer/restaurant-list" class="btn btn-primary">Explore More</a>
     </div>
     <div th:replace="fragments/footer.html"></div>
 
@@ -612,11 +611,16 @@
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
 
+                    console.log("Current Location:", lat, lon);
+
                     document.getElementById("locationInput").value = `Latitude: ${lat}, Longitude: ${lon}`;
 
                     // Convert coordinates to an address
                     const address = await reverseGeocode(lat, lon);
                     document.getElementById("locationInput").value = address;
+
+                    fetchNearbyRestaurants(lat, lon);
+
                 }, function () {
                     alert("Location access denied.");
                 });
@@ -665,10 +669,74 @@
                     document.getElementById("locationInput").value = suggestion.address;
                     document.getElementById("locationOptions").style.display = "none";
                     console.log("Selected Location:", suggestion.lat, suggestion.lon);
+
+                    // Fetch nearby restaurants when a location is selected
+                    fetchNearbyRestaurants(suggestion.lat, suggestion.lon);
                 });
                 suggestionsList.appendChild(li);
             });
         }
+
+        function redirectToRestaurantList() {
+            const searchQuery = document.getElementById('searchInput').value;
+            window.location.href = `/customer/restaurant-list`;
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                redirectToRestaurantList();
+            }
+        });
+
+        document.getElementById('searchInput').addEventListener('focus', function () {
+            redirectToRestaurantList();
+        });
+
+        async function fetchNearbyRestaurants(lat, lon) {
+            try {
+                const response = await fetch(`/customer/restaurants/nearby?latitude=${lat}&longitude=${lon}&radius=1`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const restaurants = await response.json();
+                console.log("Nearby Restaurants:", restaurants);
+                displayNearbyRestaurants(restaurants);
+            } catch (error) {
+                console.error("Error fetching restaurants:", error);
+                alert("Failed to fetch nearby restaurants. Please try again later.");
+            }
+        }
+
+
+        // Display Nearby Restaurants in the Restaurants Section
+        function displayNearbyRestaurants(restaurants) {
+            const container = document.querySelector(".restaurants");
+            container.innerHTML = "";  // Clear previous results
+
+            if (restaurants.length === 0) {
+                container.innerHTML = "<p>No restaurants found nearby.</p>";
+                return;
+            }
+
+            restaurants.forEach(restaurant => {
+                const restaurantCard = `
+            <a href="/customer/restaurant-menu/${restaurant.id}" class="restaurant-card">
+                <div class="restaurant-image" style="background-image: url(${restaurant.imageUrl});"></div>
+                <div class="restaurant-info">
+                    <div class="restaurant-name">${restaurant.name}</div>
+                    <div class="rating">${"★".repeat(Math.round(restaurant.rating))} ${"☆".repeat(5 - Math.round(restaurant.rating))}</div>
+                    <p class="restaurant-address">${restaurant.address}</p>
+                </div>
+            </a>
+        `;
+                container.innerHTML += restaurantCard;
+            });
+        }
+
+
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
