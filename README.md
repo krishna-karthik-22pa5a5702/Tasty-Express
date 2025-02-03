@@ -39,9 +39,7 @@ To run this project locally, follow these steps:
 4. Deploy the generated `foodExpress.war` file from the `target` directory to a servlet container like Apache Tomcat.
 5. Configure the database (if required):
    - Install MySQL and create a database named `foodexpress`.
-   - Import the SQL script from `src/main/resources/schema.sql`.
-6. Update database credentials in `src/main/resources/config.properties`.
-7. Start the Tomcat server and access the application at `http://localhost:8080/`.
+6. Start the Tomcat server and access the application at `http://localhost:8080/`.
 
 ## Usage
 1. **Access the Application**: Open your browser and go to `http://localhost:8080/foodExpress`.
