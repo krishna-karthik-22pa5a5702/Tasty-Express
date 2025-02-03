@@ -2,6 +2,9 @@ package registerationlogin.controller;
 
 import java.security.Principal;
 import org.springframework.stereotype.Controller;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -34,7 +37,7 @@ public class CheckoutController {
 
     public CheckoutController(CartService cartService, CartItemService cartItemService,
             RestaurantRepository restaurantRepository, OrderService orderService, OrderItemService orderItemService,
-            UserService userService , FeedbackService feedbackService) {
+            UserService userService, FeedbackService feedbackService) {
         this.cartService = cartService;
         this.cartItemService = cartItemService;
         this.restaurantRepository = restaurantRepository;
@@ -182,6 +185,7 @@ public class CheckoutController {
         order.setOrderStatus("PENDING");
         order.setTotalPrice(cart.getTotalPrice());
         order.setRestaurant(restaurant);
+        order.setOrderDate(LocalDateTime.now());
         order.setUser(user);
 
         order = orderService.saveOrder(order);
@@ -254,4 +258,6 @@ public class CheckoutController {
     public String feedbackSuccess() {
         return "feedback_success";
     }
+
+
 }
