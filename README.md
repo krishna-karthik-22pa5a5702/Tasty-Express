@@ -41,7 +41,7 @@ To run this project locally, follow these steps:
    - Install MySQL and create a database named `foodexpress`.
    - Import the SQL script from `src/main/resources/schema.sql`.
 6. Update database credentials in `src/main/resources/config.properties`.
-7. Start the Tomcat server and access the application at `http://localhost:8080/foodExpress`.
+7. Start the Tomcat server and access the application at `http://localhost:8080/`.
 
 ## Usage
 1. **Access the Application**: Open your browser and go to `http://localhost:8080/foodExpress`.
